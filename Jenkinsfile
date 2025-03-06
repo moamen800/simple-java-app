@@ -1,23 +1,39 @@
-node {
-    git branch: 'main', url: 'https://github.com/moamen800/simple-java-app.git'
-    
-    stage('build') {
-        try{
-            sh'echo "build stage"'
+pipeline {
+    agent {
+        label 'aws-agent'
+    }
+
+    stages {
+        stage ('build') {
+            steps{
+                script{
+                    sh 'mvn clean package'
+                }
+            }
         }
-        catch(Exception e) {
-            sh'echo "Exception Found"'
-            throw e
+
+        stage ('test') {
+            steps{
+                script{
+                    echo 'test in progress'
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            slackSend channel: '#jenkins-ci', message: 'Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)', teamDomain: 'devops-rza6966', tokenCredentialId: 'Slack-Bot-Token'
         }
     }
 
-    stage('test') {
-        if(env.BRANCH_NAME == "feat") {
-            sh'echo "test stage"'
-        }
-        else {
-            sh'echo "skip the stage"'
+    post {
+        failure {
+            slackSend channel: '#jenkins-ci', message: 'Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)', teamDomain: 'devops-rza6966', tokenCredentialId: 'Slack-Bot-Token'
         }
     }
 
 }
+
+
+
