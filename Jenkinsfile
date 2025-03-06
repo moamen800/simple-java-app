@@ -23,7 +23,7 @@ pipeline {
     
     post {
         success {
-            slackSend channel: '#jenkins-ci', message: 'Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)', teamDomain: 'devops-rza6966', tokenCredentialId: 'Slack-Bot-Token'
+            slackSend channel: '#jenkins-ci', message: 'Build Success - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)', teamDomain: 'devops-rza6966', tokenCredentialId: 'Slack-Bot-Token'
         }
 
         failure {
