@@ -1,25 +1,22 @@
 name: Build and Deploy Workflow
 on:
-  workflow_dispatch:
-    inputs:
-      version_name:
-        required: true
-        description: "Enter the Version name for the GitHub workflow"
-        default: "test"
+  push
 jobs:
   build_and_deploy:
     name: Build and Deploy Job
     runs-on: ubuntu-latest
+    container:
+      image: node:14.16
     steps:
+      - name: check node version
+        run: node -v
+
       - name: List files before checkout
-        if: github.ref == 'refs/heads/feature' 
+        if: github.ref == 'refs/heads/main' 
         run: ls
-        shell: bash
 
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: List files after checkout
-        if: github.event.inputs.version_name == 'test' 
         run: ls
-        shell: bash
