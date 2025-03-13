@@ -1,26 +1,27 @@
-name: Node.js Version Check Workflow
+name: Environment Variables Example
 
 on:
-  push
+  push:
+    branches:
+      - "main"
+
+env:
+  GLOBAL_VAR: "Global variable"
 
 jobs:
-  node_version_check:
-    name: Node.js Version Check Job
+  example-job:
     runs-on: ubuntu-latest
-    container:
-      image: node:latest
+    env:
+      JOB_VAR: "Job-level variable"
+
     steps:
-      - name: Check Node.js Version
-        run: node -v
-      
-      - name: List files before checkout
-        if: github.ref == 'refs/heads/main' # The Job will run only if the workflow runs from the feature branch
-        run: ls 
-        shell: bash
-
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: List files after checkout
-        run: ls
-        shell: bash
+      - name: Print Environment Variables
+        env:
+          STEP_VAR: "Step-level variable"
+        run: |
+          echo "Global: ${{ env.GLOBAL_VAR }}"
+          echo "Job: ${{ env.JOB_VAR }}"
+          echo "Step: ${{ env.STEP_VAR }}"
+          echo "GitHub Repo: ${{ github.repository }}"
+          echo "GitHub Ref: ${{ github.ref }}"
+          echo "GitHub Actor: ${{ github.actor }}"
