@@ -1,24 +1,27 @@
-name: Build and Deploy Workflow
+name: Node.js Version Check Workflow
+
 on:
   push
+
 jobs:
-  build_and_deploy:
-    name: Build and Deploy Job
+  node_version_check:
+    name: Node.js Version Check Job
     runs-on: ubuntu-latest
     container:
-      image: node:14.16
+      image: node:latest
     steps:
-      - name: check node version
+      - name: Check Node.js Version
         run: node -v
-
+      
       - name: List files before checkout
-        if: github.ref == 'refs/heads/feature' 
-        run: ls
+        if: github.ref == 'refs/heads/feature' # The Job will run only if the workflow runs from the feature branch
+        run: ls 
         shell: bash
 
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: List files after checkout
+        if: github.event.inputs.version_name == 'test' # The Job will run Only if the workflow is manually triggered and the input versionName is "test"
         run: ls
         shell: bash
