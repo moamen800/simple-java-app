@@ -12,11 +12,13 @@ jobs:
         run: node -v
 
       - name: List files before checkout
-        if: github.ref == 'refs/heads/main' 
+        if: github.ref == 'refs/heads/feature' 
         run: ls
+        shell: bash
 
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: List files after checkout
         run: ls
+        shell: bash
