@@ -18,8 +18,15 @@ spec:
     spec:
       containers:
         - name: java-app
-          image: dinagamal/javaapp:latest
+          image: moamen800/java-app:latest
           ports:
             - containerPort: 80
               protocol: TCP
           imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "250m"    
+              memory: "256Mi"  
+            limits:
+              cpu: "500m"    
+              memory: "512Mi"
