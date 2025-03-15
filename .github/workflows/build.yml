@@ -12,12 +12,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set Environment Variables
+        run: echo "DOCKERHUB_TOKEN=${{ secrets.DOCKERHUB_TOKEN }}" >> $GITHUB_ENV
+
       - name: Build Docker image
         run: docker build -t moamen800/java-app:v1 .
 
       - name: Login to Docker Hub
         env:
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_TOKEN: ${{ env.DOCKERHUB_TOKEN }}
         run: echo "$DOCKERHUB_TOKEN" | docker login -u moamen800 --password-stdin
       
       - name: Push Docker image
