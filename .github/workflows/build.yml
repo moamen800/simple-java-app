@@ -1,28 +1,26 @@
-name: my workflow
+name: Docker Build and Push
 
 on:
   push:
     branches:
       - "main"
-env:
-  GLOBAL_VAR: "Global variable"
+
 jobs:
-  example-job:
+  publish_image:
     runs-on: ubuntu-latest
-    env:
-      JOB_VAR: "Job-level variable"
 
     steps:
-      - name: Print Environment Variables
-        env:
-          STEP_VAR: "Step-level variable"
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
         run: |
-          echo "Global: ${{ env.GLOBAL_VAR }}"
-          echo "Job: ${{ env.JOB_VAR }}"
-          echo "Step: ${{ env.STEP_VAR }}"
-          echo "GitHub Repo: ${{ github.repository }}"
-          echo "GitHub Ref: ${{ github.ref }}"
-          echo "GitHub Actor: ${{ github.actor }}"
-          echo "Docker Username: ${{ vars.DOCKERHUB_USERNAME }}"
-          echo "Docker Username: ${{ secrets.DOCKERHUB_USERNAME }}"
-          echo "Docker Password: ${{ secrets.DOCKERHUB_PASSWORD }}"
+          docker build -t moamen800/java-app:v1 .
+
+      - name: Login to Docker Hub
+        run: |
+          docker login -u moamen800 -p "${{ secrets.DOCKERHUB_TOKEN }}"
+
+      - name: Push Docker image
+        run: |
+          docker push moamen800/java-app:v1
