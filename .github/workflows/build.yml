@@ -17,6 +17,7 @@ jobs:
 
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u moamen800 --password-stdin
+      
 
       - name: Push Docker image
         run: docker push moamen800/java-app:v1
