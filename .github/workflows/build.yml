@@ -8,21 +8,15 @@ on:
 jobs:
   publish_image:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Build Docker image
-        run: |
-          docker build -t moamen800/java-app:v1 .
+        run: docker build -t moamen800/java-app:v1 .
 
       - name: Login to Docker Hub
-        run: |
-          docker login -u moamen800 -p "${{ secrets.DOCKERHUB_TOKEN }}"
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u moamen800 --password-stdin
 
       - name: Push Docker image
-        run: |
-          docker push moamen800/java-app:v1
-
-    
+        run: docker push moamen800/java-app:v1
